@@ -7,19 +7,19 @@ public static boolean containsVowel(String s) {
 	int i = s.indexOf('i');
 	int o = s.indexOf('o');
 	int u = s.indexOf('u');
-	if ( a>=1) {
+	if ( a>=0) {
 		return true;
 	}
-	else if ( e>=1) {
+	else if ( e>=0) {
 		return true;
 	}
-	else if ( i>=1) {
+	else if ( i>=0) {
 		return true;
 	}
-	else if ( o>=1) {
+	else if ( o>=0) {
 		return true;
 	}
-	else if ( u>=1) {
+	else if ( u>=0) {
 		return true;
 	}
 	
