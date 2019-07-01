@@ -37,13 +37,18 @@ class PersonTest {
 		assertEquals(p3.father(), null);
 		assertEquals(p4.father(), null);
 		assertEquals(p2.isOlderThan(p1),false);
+		System.out.println(p2.numChildren());
 		p1.setfather(p4);
 		p1.setmother(p2);
+		System.out.println(p2.numChildren());
 		p3.setfather(p1);
 		p3.setmother(p2);
+		System.out.println(p2.numChildren());
 		assertEquals(p1.isHalfSibling(p3), true);
 		assertEquals(p1.isSibling(p3), false);
-		
+		assertEquals(p2.numChildren(), 2);
+		p1.setmother(p3);
+		assertEquals(p2.numChildren(),1);
 		//fail("Not yet implemented");
 	}
 
