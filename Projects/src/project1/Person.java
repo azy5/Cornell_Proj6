@@ -43,6 +43,7 @@ public Person mother() {
 public Person father() {
 	return father;
 }
+/**Return the number of children a person has*/
 public int numChildren() {
 	return children;
 }
@@ -82,6 +83,7 @@ public void setfather(Person f) {
 	father= f;
 	f.setnumChildren(f.numChildren()+1);
 }
+/** Change the number of children to nc*/
 public void setnumChildren(int nc) {
 	children= nc;
 }
@@ -103,7 +105,7 @@ public boolean isSibling(Person other) {
 	}
 	return false;
 }
-/**Return true if this person’s birthdate is before other’s. Requires
+/**Return true if this person’s birth date is before other’s. Requires
 that other is non-null.*/
 public boolean isOlderThan(Person other) {
 	if(this.brithyear()> other.brithyear()) {
