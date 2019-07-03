@@ -26,12 +26,15 @@ public class Discuss3 {
          */
 
         // TODO: throw RuntimeException according to the method spec
-if (n-m <= 0) {
+/*if (n-m <= 0) {
 	throw new RuntimeException("The array is empty");
-}
+}*/
         int min= c[m];
         for (int k= m+1; k <= n; k= k+1) {
             if (c[k] < min) min= c[k];
+        }
+        if (n-m <= 0) {
+        	throw new RuntimeException("The array is empty");
         }
         return min;
     }
@@ -45,14 +48,30 @@ if (n-m <= 0) {
         int[] b= {5, 3, 8, 2, 6};
         try {
         System.out.println(min(b, 1, 0));
-        System.out.println(min(b, 1, 3));
-        System.out.println(min(b, 1, 1));
+      
         }
         catch (RuntimeException e) {
         	System.err.println("Exception: "+ e.getMessage());
         }
+        try {
+        	System.out.println(min(b,1,3));
+        }
+        	catch (RuntimeException e) {
+        		System.err.println("Exception: "+ e.getMessage());
+        	}
+        try {
+        	System.out.println(min(b,1,1));
+        }
+        	catch (RuntimeException e) {
+        		System.err.println("Exception: "+ e.getMessage());
+        	}
 
-        //printProduct();
+        try {
+			printProd();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /** Do this over and over, until the user types "DONE" instead of a first integer:
@@ -69,10 +88,15 @@ if (n-m <= 0) {
             s = reader.readLine().trim();
             if (s.equals("DONE"))
                 return;
-
             int a;
+try {
+         
             a = Integer.parseInt(s);
+}
 
+catch( NumberFormatException e) {
+	 a = 1;
+}
 
             System.out.println("Enter another number: ");
 
@@ -80,7 +104,12 @@ if (n-m <= 0) {
             s = reader.readLine().trim();
 
             int b;
+            try {
             b= Integer.parseInt(s);
+            }
+            catch (NumberFormatException e) {
+            	b=1;
+            }
 
             System.out.println("Product: " + a*b);
         }
