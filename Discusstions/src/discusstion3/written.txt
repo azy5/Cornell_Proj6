@@ -1,0 +1,21 @@
+Throwable 
+	Error
+	Exception
+		RuntimeExption
+		OtherExption
+p(0) outputs
+six
+four
+three
+two
+error
+p(-2) outputs
+six 
+five
+four
+three
+two 
+one 
+-1
+For question 6 the right answer is b because E1 is a subtype 
+of E so it meet the requirements to implement interface I
