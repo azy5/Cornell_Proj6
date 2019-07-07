@@ -23,6 +23,7 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
 
     /** last  node of the linked list (null if the list is empty) */
     private Node tail;
+    private List<E> mylist = new DLinkedList<E>();
     
     /** Constructor: an empty linked list. 
      * @return */
@@ -92,19 +93,32 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      * Place element in a new node at the end of the list and return the new node.
      * This operation must take constant time.
      */
-    private Node append(E element) {
+ 
+	
+	private Node append(E element) {
+    	Node n = new Node(tail, element, null);
+    	
+    		this.tail=n;
+    		size +=1;
+    return n;
+    	
         // TODO item #4
         // This mid-size helper function will be used by other methods
-        throw new NotImplementedError();
+       // throw new NotImplementedError();
     }
     
     /** Append element to the end of this list and return true. */
     public @Override boolean add(E element) {
+    	Node n=((DLinkedList<E>) mylist).append(element);
+    	if(n==tail) {
+    		return true;
+    	}
+    	return false;
         // TODO item #5
         // Rely on helper methods to keep this method small
         // This is THE MOST IMPORTANT method to get right because it will be used
         // in nearly every test
-        throw new NotImplementedError();
+        //throw new NotImplementedError();
     }
     
     /**
@@ -115,14 +129,30 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      *              0 is the first element, 1 is the second, etc.
      * @throws IndexOutOfBoundsException if index is not in [0..size)
      */
-    private Node getNode(int index) {
+    
+	private Node getNode(int index) {
+		Node n= null;
+    	if(size -index > index) {
+    		 n= head;
+    	for (int i =0; i<index; i++) {
+    		n=n.succ;
+    	}
+    	}
+    	else if(size - index <= index) {
+    		n=tail;
+    		for (int i =0; i<size-index; i++) {
+        		n=n.pred;
+        	}	
+    	}
+    	return n;
+    	//return (DLinkedList<E>.Node) mylist.get(index);
         // TODO item #6
         // This large helper method is used more than any other helper method
         // It is used by other public methods or for testing.
         // Note that there are two ways to get to a node: from the head or from the tail.
         // This MUST use the fastest way for index.
         // (If h is exactly the middle, then either way is ok.)
-        throw new NotImplementedError();
+        //throw new NotImplementedError();
     }
     
     /**
@@ -133,12 +163,15 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      *              0 is the first element, 1 is the second, etc.
      * @throws IndexOutOfBoundsException if index is not in [0..size)
      */
-    public @Override E get(int index) {
+  
+	public @Override E get(int index) {
+    	return ((DLinkedList<E>) mylist).getNode(index).data;
+    	
         // TODO item #7
         // Rely on helper methods to keep this method small.
         // Note that the helper method could throw the exception; doesn't
         // have to be done here.
-        throw new NotImplementedError();
+        //throw new NotImplementedError();
     }
     
     /**
@@ -152,11 +185,14 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      * @throws IndexOutOfBoundsException if index is not in [0..size)
      */
     public @Override E set(int index, E element) {
+    	this.getNode(index).setdata(element);
+    	return this.getNode(index).data;
+    	
         // TODO item #8
         // Rely on helper methods to keep this method small.
         // Note that a helper method could throw the exception; doesn't
         // have to be done here.
-        throw new NotImplementedError();
+        //throw new NotImplementedError();
     }
     
     /**
@@ -165,9 +201,13 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      * Runs in constant time.
      */
     private Node prepend(E element) {
+    	Node n= new Node(null,element, head);
+    	this.head = n;
+    	size+=1;
+    	return n;
         // TODO item #9
         // This mid-size helper function will be used by other methods
-        throw new NotImplementedError();
+        //throw new NotImplementedError();
     }
     
     /**
@@ -178,11 +218,20 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      * @param node a non-null Node that must be in this list
      */
     private Node insertBefore(E element, Node node) {
+    	Node n= new Node(node.pred,element,node);
+    	size+=1;
+    	if(node.pred==null) {
+    		head=n;
+    	}
+    	else if (node==null) {
+    		tail=n;
+    	}
+    	return n;
         // TODO item #10
         // This mid-size helper function will be used by other methods.
         // Do NOT test whether node is actually a Node of this list because
         // it will then not be a constant-time operation.
-        throw new NotImplementedError();
+        //throw new NotImplementedError();
     }
     
     /**
@@ -196,11 +245,13 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      * @throws IndexOutOfBoundsException if i is not in [0..size]
      */
     public @Override void add(int index, E element) {
+    	Node n= new Node(this.getNode(index).pred,element, this.getNode(index));
+    	size+=1;
         // TODO item #11
         // Rely on helper methods to keep this method small.
         // Note that a helper method could throw the exception; doesn't
         // have to be done here.
-        throw new NotImplementedError();
+        //throw new NotImplementedError();
     }
     
     /**
@@ -210,9 +261,14 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      * @return the data inside of n
      */
     private E removeNode(Node n) {
+    	n.pred.setsucc(n.succ);
+    	n.succ.setpred(n.pred);
+    	n.setsucc(null);
+    	n.setpred(null);
+    	return n.data;
         // TODO item #12
         // This is a large helper method
-        throw new NotImplementedError();
+        //throw new NotImplementedError();
     }
     
     /**
@@ -225,6 +281,15 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      * @throws IndexOutOfBoundsException if i is not in [0..size)
      */
     public @Override E remove(int i) {
+    	int h=0;
+    	for(Node n =head; n!=null; n=n.succ) {
+    		h++;
+    		if(h==i) {
+    			E e= n.data;
+    			n.setdata(null);
+    			return e;
+    		}
+    	}
         // TODO item #13
         // Rely on helper methods to keep this method small.
         // Note that a helper method could throw the exception; doesn't
@@ -251,6 +316,15 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
             this.pred = p;
             this.succ = s;
             this.data = e;
+        }
+        private void setdata(E e) {
+        	this.data=e;
+        }
+        private void setpred(Node p) {
+        	this.pred=p;
+        }
+        private void setsucc(Node s) {
+        	this.succ= s;
         }
     }
 
