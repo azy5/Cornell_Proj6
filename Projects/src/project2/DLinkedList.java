@@ -23,7 +23,7 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
 
     /** last  node of the linked list (null if the list is empty) */
     private Node tail;
-    private List<E> mylist = new DLinkedList<E>();
+    
     
     /** Constructor: an empty linked list. 
      * @return */
@@ -97,8 +97,13 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
 	
 	private Node append(E element) {
     	Node n = new Node(tail, element, null);
-    	
+    	if(tail!=null) {
+    		this.tail.setsucc(n);
+    	}
     		this.tail=n;
+    		if(head==null) {
+    			head=n;
+    		}
     		size +=1;
     return n;
     	
@@ -109,7 +114,7 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
     
     /** Append element to the end of this list and return true. */
     public @Override boolean add(E element) {
-    	Node n=((DLinkedList<E>) mylist).append(element);
+    	Node n=this.append(element);
     	if(n==tail) {
     		return true;
     	}
@@ -165,7 +170,7 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      */
   
 	public @Override E get(int index) {
-    	return ((DLinkedList<E>) mylist).getNode(index).data;
+    	return this.getNode(index).data;
     	
         // TODO item #7
         // Rely on helper methods to keep this method small.
@@ -366,9 +371,13 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
             assertEquals(dll.toString(), ll.toString());
 
             dll.add(5); ll.add(5);
+            System.out.println(dll.toString());
+            System.out.println(ll.toString());
             assertEquals(dll.toString(), ll.toString());
             
             dll.add(4); ll.add(4);
+            System.out.println(dll.toString());
+            System.out.println(ll.toString());
             assertEquals(dll.toString(), ll.toString());
         }
     }
