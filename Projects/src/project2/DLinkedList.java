@@ -228,9 +228,7 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
     	if(node.pred==null) {
     		head=n;
     	}
-    	else if (node==null) {
-    		tail=n;
-    	}
+    	
     	return n;
         // TODO item #10
         // This mid-size helper function will be used by other methods.
@@ -379,6 +377,7 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
             System.out.println(dll.toString());
             System.out.println(ll.toString());
             assertEquals(dll.toString(), ll.toString());
+            
         }
     }
 }
