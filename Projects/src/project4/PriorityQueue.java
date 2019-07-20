@@ -1,4 +1,4 @@
-package a4;
+package project4;
 
 import java.util.Comparator;
 import java.util.NoSuchElementException;
@@ -55,4 +55,5 @@ public interface PriorityQueue<E, P> {
 	 * @throws NoSuchElementException if this does not contain e.
 	 */
 	public void changePriority(E e, P p) throws NoSuchElementException;
+	
 }
