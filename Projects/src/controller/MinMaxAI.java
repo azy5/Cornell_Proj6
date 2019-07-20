@@ -1,5 +1,8 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 import model.Board;
@@ -77,10 +80,12 @@ public abstract class MinMaxAI extends Controller {
 	 * <p>choosing a higher value for depth makes the AI smarter, but requires
 	 * more time to select moves.
 	 */
+	private int depth;
 	protected MinMaxAI(Player me, int depth) {
 		super(me);
+		this.depth=depth;
 		// TODO Auto-generated method stub
-		throw new NotImplementedException();
+		//throw new NotImplementedException();
 	}
 
 	/**
@@ -88,6 +93,25 @@ public abstract class MinMaxAI extends Controller {
 	 * algorithm described above.
 	 */
 	protected @Override Location nextMove(Game g) {
+		depth--;
+		if(depth <=0) {
+			int storeds=0;
+			
+			 Iterator<Location> l = this.moves(g.getBoard()).iterator();
+			//l=  (ArrayList<Location>) this.moves(g.getBoard()).iterator();
+			Location loc = new Location(0,0);
+			Location storeloc = new Location(0,0);
+			while(l.hasNext()) {
+				loc=l.next();
+				int score= this.estimate(g.getBoard().update(me, loc));
+				if(score>storeds) {
+					storeloc=loc;
+					storeds=score;
+				}
+			}
+			return storeloc;
+		}
+		g.getBoard().update(me, this.nextMove(g));
 		// TODO Auto-generated method stub
 		throw new NotImplementedException();
 	}

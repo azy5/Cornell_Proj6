@@ -1,23 +1,52 @@
 Question 1
 a)(initialization) Does it start right? If the precondition holds and then the initialization routine is
 run, does the loop invariant become true?
-b)(Termination)Does it end right?Make a loop gaurd to make sure that the postcondition is true 
-c)(Progress)will it end? In side the loop make progress toward were the loop gaurd is false and postcondition
+b)(Termination)Does it end right?Make a loop guard to make sure that the postcondition is true 
+c)(Progress)will it end? In side the loop make progress toward were the loop guard is false and postcondition
 is true
-d)(Preservation)is the inveriant always true? Make the loop body so that the inveriant is always true.
+d)(Preservation)is the invariant always true? Make the loop body so that the invariant is always true.
 Question 2
 a) int k=0 boolen b= true
-b)int k= c.length b= true 
+b)int k= c.length boolen b= true 
 Question 3
 a) loop guard: k<c.lenght
 b) loop guard: k>0
 Question 4
 a)for(int k=0; k<c.length, k++){
-if(a[k]!=0)
-set a[k] to 0
+if(c[k]!=0)
+set c[k] to 0
 }
 b)for(int k= c.length k>0 k--){
-if(a[k]!=0)
-set a[k] to 0
+if(c[k]!=0)
+set c[k] to 0
 }
 Question 5
+for(int h=b.length-1; h>0 h--;){
+if(b[i] ==v){
+break;
+}
+else if( h==0){
+h=-1;
+}
+}
+Question 6
+   0    r     r+w  h      b.length
+b: [ red|white|blue|   ?  ] 
+h is the number of elements in ?
+r is the number of elements in the red 
+w is the number of elements in the white
+   0        h           h+r   		h+r+w    b.length
+b: [    ?   |	red		|	white	|	blue ] 
+h is the number of elements in ?
+r is the number of elements in the red 
+w is the number of elements in the white
+0          r         h+r   	h+r+w    b.length
+b: [  red  |	?	|	white	|	blue ] 
+h is the number of elements in ?
+r is the number of elements in the red 
+w is the number of elements in the white
+  0        r           w+r   h+r+w    b.length
+b: [   red |	white	|	?	|	blue ] 
+h is the number of elements in ?
+r is the number of elements in the red 
+w is the number of elements in the white

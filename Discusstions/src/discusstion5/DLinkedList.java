@@ -1,13 +1,10 @@
-package project2;
+package discusstion5;
 
-
-
+import static org.junit.Assert.assertSame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +22,17 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
     /** last  node of the linked list (null if the list is empty) */
     private Node tail;
     
+    /** Constructor: an empty linked list. */
+    public DLinkedList() {
+    	this.size = 0;
+    	this.head = null;
+    	this.tail = null;
+    }
+
+    /**
+     * Return the number of elements in this list.
+     * This operation must take constant time.
+     */
     /** @see java.util.List.iterator() */
      @Override
      public Iterator<E> iterator() {
@@ -33,60 +41,26 @@ public class DLinkedList<E> extends java.util.AbstractList<E> {
      }
      /** An instance iterates over a DLinkedList */
       private class DListIterator implements Iterator<E> {
-private final Exception Exception = null;
-private Node head;
-
+ Node n= head;
 		@Override
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
-	if(head.succ==null) {
-		return false;
-	}
-	return true;
-			
-			
+			return n != null;
 		}
 
 		@Override
 		public E next() {
 			// TODO Auto-generated method stub
-			if(head.pred==null) {
-				return head.data;
-				
+			if(hasNext()) {
+			E data = n.data;
+			n =n.succ;
+			return data;
 			}
-			else if(head.succ==null) {
-				return null;
-			}
-	
-			else {
-				head= head.succ;
-				return head.data;
-			}
+			throw new NotImplementedError();
 		}
-      }
+     }
 
-    /** Constructor: an empty linked list. 
-     * @return */
-    public  DLinkedList() {
-    	
-    	head= null;
-    	tail = null;
-    	size= 0;
-    	
-        // TODO item #1
-        // Look at the class invariant to determine how to implement this.
-        //throw new NotImplementedError();
-    }
-
-    /**
-     * Return the number of elements in this list.
-     * This operation must take constant time.
-     */
     public @Override int size() {
-    	return size;
-        // TODO item #2
-        // This is an extremely small method
-        //throw new NotImplementedError();
+    	return this.size;
     }
 
     /**
@@ -115,55 +89,39 @@ private Node head;
      * For example, if this contains 6 3 8 in that order, the result is "[8, 3, 6]".
      */
     public String toStringRev() {
-    	String res ="[";
-    	for(Node n=tail; n!=null; n=n.pred) {
-    		if(n!= tail) {
-    			res = res +",";
-    		}
-    		res= res+ n.data;
+    	String result = "[";
+    	for (Node n = tail; n != null; n = n.pred) {
+    		// invariant: result = "[s0, s1, ..., sk,"
+    		result += n.data;
+    		if (n.pred != null)
+    			result += ", ";
     	}
-    	return res +"]";
-        // TODO item #3
-        // This should use field tail and the pred fields in nodes.
-        // Do NOT use field size.
-        //throw new NotImplementedError();
+    	return result + "]";
     }
     
     /**
      * Place element in a new node at the end of the list and return the new node.
      * This operation must take constant time.
      */
- 
-	
-	private Node append(E element) {
-    	Node n = new Node(tail, element, null);
-    	if(tail!=null) {
-    		this.tail.setsucc(n);
-    	}
-    		this.tail=n;
-    		if(head==null) {
-    			head=n;
-    		}
-    		size +=1;
-    return n;
+    private Node append(E element) {
+    	Node result = new Node(this.tail, element, null);
+    	this.size += 1;
     	
-        // TODO item #4
-        // This mid-size helper function will be used by other methods
-       // throw new NotImplementedError();
+    	if (this.tail == null) {
+    		this.tail = result; this.head = result;
+    	}
+    	else {
+    		this.tail.succ = result;
+    		this.tail = result;
+    	}
+    	return result;
     }
     
     /** Append element to the end of this list and return true. */
     public @Override boolean add(E element) {
-    	Node n=this.append(element);
-    	if(n==tail) {
-    		return true;
-    	}
-    	return false;
         // TODO item #5
-        // Rely on helper methods to keep this method small
-        // This is THE MOST IMPORTANT method to get right because it will be used
-        // in nearly every test
-        //throw new NotImplementedError();
+    	append(element);
+    	return true;
     }
     
     /**
@@ -174,49 +132,34 @@ private Node head;
      *              0 is the first element, 1 is the second, etc.
      * @throws IndexOutOfBoundsException if index is not in [0..size)
      */
-    
-	private Node getNode(int index) {
-		Node n= null;
-    	if(size -index > index) {
-    		 n= head;
-    	for (int i =0; i<index; i++) {
-    		n=n.succ;
-    	}
-    	}
-    	else if(size - index <= index) {
-    		n=tail;
-    		for (int i =0; i<size-index; i++) {
-        		n=n.pred;
-        	}	
-    	}
-    	return n;
-    	//return (DLinkedList<E>.Node) mylist.get(index);
-        // TODO item #6
-        // This large helper method is used more than any other helper method
-        // It is used by other public methods or for testing.
-        // Note that there are two ways to get to a node: from the head or from the tail.
-        // This MUST use the fastest way for index.
-        // (If h is exactly the middle, then either way is ok.)
-        //throw new NotImplementedError();
-    }
-    
-    /**
-     * Return the Node at the given index of this list.
-     * Takes time proportional to min(index, size - index).
-     *
-     * @param index the index of the node, in [0..size).
-     *              0 is the first element, 1 is the second, etc.
-     * @throws IndexOutOfBoundsException if index is not in [0..size)
-     */
-  
-	public @Override E get(int index) {
-    	return this.getNode(index).data;
+    private Node getNode(int index) {
+    	if (index < 0 || index >= size)
+    		throw new IndexOutOfBoundsException();
     	
-        // TODO item #7
-        // Rely on helper methods to keep this method small.
-        // Note that the helper method could throw the exception; doesn't
-        // have to be done here.
-        //throw new NotImplementedError();
+    	if (index < size/2) {
+    		Node current = this.head;
+    		for (int i = 0; i < index; i++)
+    			current = current.succ;
+    		return current;
+    	}
+    	else {
+    		Node current = this.tail;
+    		for (int i = 0; i < (size - 1) - index; i++)
+    			current = current.pred;
+    		return current;
+    	}
+    }
+    
+    /**
+     * Return the Node at the given index of this list.
+     * Takes time proportional to min(index, size - index).
+     *
+     * @param index the index of the node, in [0..size).
+     *              0 is the first element, 1 is the second, etc.
+     * @throws IndexOutOfBoundsException if index is not in [0..size)
+     */
+    public @Override E get(int index) {
+    	return getNode(index).data;
     }
     
     /**
@@ -230,29 +173,29 @@ private Node head;
      * @throws IndexOutOfBoundsException if index is not in [0..size)
      */
     public @Override E set(int index, E element) {
-    	this.getNode(index).setdata(element);
-    	return this.getNode(index).data;
-    	
-        // TODO item #8
-        // Rely on helper methods to keep this method small.
-        // Note that a helper method could throw the exception; doesn't
-        // have to be done here.
-        //throw new NotImplementedError();
+    	Node n = getNode(index);
+    	E result = n.data;
+    	n.data = element;
+    	return result;
     }
-    
+
     /**
      * Insert element in a new node at the beginning of the list and return the
      * new node.
      * Runs in constant time.
      */
     private Node prepend(E element) {
-    	Node n= new Node(null,element, head);
-    	this.head = n;
-    	size+=1;
-    	return n;
-        // TODO item #9
-        // This mid-size helper function will be used by other methods
-        //throw new NotImplementedError();
+    	Node result = new Node(null, element, this.head);
+    	this.size++;
+    	if (this.head == null) {
+    		this.head = result;
+    		this.tail = result;
+    	}
+    	else {
+    		this.head.pred = result;
+    		this.head = result;
+    	}
+    	return result;
     }
     
     /**
@@ -263,18 +206,16 @@ private Node head;
      * @param node a non-null Node that must be in this list
      */
     private Node insertBefore(E element, Node node) {
-    	Node n= new Node(node.pred,element,node);
-    	size+=1;
-    	if(node.pred==null) {
-    		head=n;
-    	}
+    	Node n = new Node(node.pred, element, node);
+    	this.size++;
     	
+    	if (n.pred == null)
+    		this.head = n;
+    	else
+    		n.pred.succ = n;
+    	
+    	n.succ.pred = n;
     	return n;
-        // TODO item #10
-        // This mid-size helper function will be used by other methods.
-        // Do NOT test whether node is actually a Node of this list because
-        // it will then not be a constant-time operation.
-        //throw new NotImplementedError();
     }
     
     /**
@@ -288,13 +229,10 @@ private Node head;
      * @throws IndexOutOfBoundsException if i is not in [0..size]
      */
     public @Override void add(int index, E element) {
-    	Node n= new Node(this.getNode(index).pred,element, this.getNode(index));
-    	size+=1;
-        // TODO item #11
-        // Rely on helper methods to keep this method small.
-        // Note that a helper method could throw the exception; doesn't
-        // have to be done here.
-        //throw new NotImplementedError();
+    	if (index == this.size)
+    		append(element);
+    	else
+    		insertBefore(element, getNode(index));
     }
     
     /**
@@ -304,14 +242,20 @@ private Node head;
      * @return the data inside of n
      */
     private E removeNode(Node n) {
-    	n.pred.setsucc(n.succ);
-    	n.succ.setpred(n.pred);
-    	n.setsucc(null);
-    	n.setpred(null);
+    	assert n != null;
+    	this.size--;
+    	
+    	if (n.pred == null)
+    		this.head = n.succ;
+    	else
+    		n.pred.succ = n.succ;
+    	
+    	if (n.succ == null)
+    		this.tail = n.pred;
+    	else
+    		n.succ.pred = n.pred;
+    	
     	return n.data;
-        // TODO item #12
-        // This is a large helper method
-        //throw new NotImplementedError();
     }
     
     /**
@@ -324,20 +268,7 @@ private Node head;
      * @throws IndexOutOfBoundsException if i is not in [0..size)
      */
     public @Override E remove(int i) {
-    	int h=0;
-    	for(Node n =head; n!=null; n=n.succ) {
-    		h++;
-    		if(h==i) {
-    			E e= n.data;
-    			n.setdata(null);
-    			return e;
-    		}
-    	}
-        // TODO item #13
-        // Rely on helper methods to keep this method small.
-        // Note that a helper method could throw the exception; doesn't
-        // have to be done here.
-        throw new NotImplementedError();
+    	return removeNode(getNode(i));
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -360,64 +291,86 @@ private Node head;
             this.succ = s;
             this.data = e;
         }
-        private void setdata(E e) {
-        	this.data=e;
-        }
-        private void setpred(Node p) {
-        	this.pred=p;
-        }
-        private void setsucc(Node s) {
-        	this.succ= s;
-        }
     }
 
+    
     ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Glass-box tests for DLinkedList.  Since this is an inner
      * class, it has access to DLinkedList's private types, fields, and methods.
+     * 
+     * This inherits the black box tests from ListTest.
      */
-    public static class Tests {
+    public static class Tests extends ListTest<DLinkedList<Integer>> {
 
         /**
-         * Asserts that list satisfies its invariants.  It is useful to call
+         * Asserts that this satisfies its invariants.  It is useful to call
          * this after any tests that modify a linked list to ensure that the
          * list remains well-formed.
          *
          * @throws AssertionFailedError if the list is not well-formed
          */
-        private static void assertInvariants(DLinkedList<?> list) {
-            throw new NotImplementedError();
+    	@Override
+        public void assertInvariant(DLinkedList<Integer> list) {
+        	int size = 0;
+        	for (DLinkedList<?>.Node n = list.head; n != null; n = n.succ) {
+        		size++;
+        		if (n == list.head)
+        			assertEquals(null, n.pred);
+        		else {
+        			assertNotEquals(null, n.pred);
+        			assertEquals(n, n.pred.succ);
+        		}
+        		
+        		if (n == list.tail)
+        			assertEquals(null, n.succ);
+        		else {
+        			assertNotEquals(null, n.succ);
+        			assertEquals(n, n.succ.pred);
+        		}
+        	}
+        	assertEquals(size, list.size);
         }
-
+        
         @Test
         public void testAppend() {
-            DLinkedList<String> ll     = new DLinkedList<String>();
-            DLinkedList<String>.Node n = ll.append("Mike");
-            assertEquals("[Mike]", ll.toString());
-            assertEquals("[Mike]", ll.toStringRev());
+            DLinkedList<Integer> ll     = new DLinkedList<Integer>();
+            DLinkedList<Integer>.Node n = ll.append(100);
+            assertEquals("[100]", ll.toString());
+            assertEquals("[100]", ll.toStringRev());
             assertEquals(1, ll.size());
-            assertEquals(ll.tail, n);   
+            assertEquals(ll.tail, n);
+            assertInvariant(ll);
         }
 
-        /** Compare DLinkedList to standard library list */
         @Test
-        public void testToString() {
-            List<Integer>  ll = new java.util.LinkedList<Integer>();
-            List<Integer> dll = new DLinkedList<Integer>();
-            
-            assertEquals(dll.toString(), ll.toString());
-
-            dll.add(5); ll.add(5);
-            System.out.println(dll.toString());
-            System.out.println(ll.toString());
-            assertEquals(dll.toString(), ll.toString());
-            
-            dll.add(4); ll.add(4);
-            System.out.println(dll.toString());
-            System.out.println(ll.toString());
-            assertEquals(dll.toString(), ll.toString());
-            
+        public void testPrepend() {
+        	DLinkedList<Integer> ll = testCase();
+        	DLinkedList<?>.Node  n  = ll.prepend(-1);
+        	assertInvariant(ll);
+        	assertSame(ll.head, n);
         }
+        
+        @Test
+        public void testPrependEmpty() {
+        	DLinkedList<Integer>      ll = new DLinkedList<Integer>();
+        	DLinkedList<Integer>.Node n  = ll.prepend(0);
+        	assertSame(ll.head, n);
+        	assertEquals(1,ll.size());
+        	assertEquals("[0]", ll.toString());
+        	assertEquals("[0]", ll.toString());
+        	assertInvariant(ll);
+        }
+
+		@Override
+		DLinkedList<Integer> createEmptyLT() {
+			return new DLinkedList<Integer>();
+		}
+
+		@Override
+		String toStringRev(DLinkedList<Integer> lt) {
+			return lt.toStringRev();
+		}
     }
 }
