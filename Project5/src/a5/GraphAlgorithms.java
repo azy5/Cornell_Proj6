@@ -78,8 +78,8 @@ public class GraphAlgorithms  {
 			return Path;
 		}
 		h.add(start, 0);
-			while(!(start.equals(end))) {
-			 
+			while(!(start.equals(end))) {   
+			      
 				Path.add(start); 
 		
 				Iterator<? extends E> I=start.outgoing().values().iterator();
