@@ -40,12 +40,12 @@ b: [    ?   |	red		|	white	|	blue ]
 h is the number of elements in ?
 r is the number of elements in the red 
 w is the number of elements in the white
-0          r         h+r   	h+r+w    b.length
+0          r         h+r   	    h+r+w    b.length
 b: [  red  |	?	|	white	|	blue ] 
 h is the number of elements in ?
 r is the number of elements in the red 
 w is the number of elements in the white
-  0        r           w+r   h+r+w    b.length
+  0        r           w+r      h+r+w    b.length
 b: [   red |	white	|	?	|	blue ] 
 h is the number of elements in ?
 r is the number of elements in the red 
