@@ -1,12 +1,9 @@
 package student;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 import a5.GraphAlgorithms;
@@ -14,13 +11,10 @@ import game.FindState;
 import game.FleeState;
 import game.NodeStatus;
 import game.SewerDiver;
-import javafx.scene.shape.MoveTo;
 import game.Node;
 
 import common.NotImplementedError;
-
-import a5.*;
-
+ 
 public class DiverMin implements SewerDiver {
 
 	/** Get to the ring in as few steps as possible. Once you get there, <br>
@@ -47,23 +41,83 @@ public class DiverMin implements SewerDiver {
 	 * A suggested first implementation that will always find the ring, but <br>
 	 * likely won't receive a large bonus multiplier, is a depth-first walk. <br>
 	 * Some modification is necessary to make the search better, in general. */
-	
-	
 	ArrayList<Long> Visit = new ArrayList<Long>();//places visited
 	ArrayList<Long> Candidate = new ArrayList<Long>(); //places in wait
 	HashMap<Long, Long> Pred = new HashMap<Long, Long>(); // the predecessor of the place
 	ArrayList<NodeStatus> NCand = new ArrayList<NodeStatus>(); // places in wait in Node Status
 	@Override
 	public void find(FindState state) {
+		/*if(state.distanceToRing()==0) {
+			return;
+		}
+		for(NodeStatus neighbor : state.neighbors()) {
+			if(neighbor.getDistanceToTarget()==0) {
+			   state.moveTo(neighbor.getId());
+			   return;
+			}
+		}
+		find(state);
+		*/
+		ArrayList<NodeStatus> vised= new ArrayList<NodeStatus>();
+		/*ArrayList<NodeStatus> vised2= new ArrayList<NodeStatus>();
+		ArrayList<NodeStatus> vised3= new ArrayList<NodeStatus>();*/
 		
-		System.out.println("start: "+state.currentLocation());
-
-		Visit.add(state.currentLocation()); // add start place as visited
+		while(state.distanceToRing()!=0) {
+			int b=10000;
+			NodeStatus node=null;
+			for(NodeStatus neighbor : state.neighbors()) {
+				int n= neighbor.getDistanceToTarget();
+				if(neighbor.getDistanceToTarget()== 0) {
+					state.moveTo(neighbor.getId());
+					return;
+				}
+				if(b>n && !(vised.contains(neighbor))) {
+					b=n;
+					node= neighbor;
+					
+				}
+			}
+			if(node==null) {
+				Visit.add(state.currentLocation());
+				dfs(state);
+			}
+			/*if(node== null) {
+				/*i++;
+				state.moveTo(vised.get(vised.size()-i-1).getId());
+				continue;
+				b=0;
+				for(NodeStatus neighbor : state.neighbors()) {
+					int n= neighbor.getDistanceToTarget();
+					if(b<n && !(vised2.contains(node))) {
+						b=n;
+						node= neighbor;
+					}
+				}
+			}*/
+			/*if(node== null) {
+				b=100000;
+				for(NodeStatus neighbor : state.neighbors()) {
+					int n= neighbor.getDistanceToTarget();
+					if(b<n && !(vised3.contains(node))) {
+						b=n;
+						node= neighbor;
+					}
+				}
+			}*/
+			if(state.distanceToRing()!=0 && node!=null) {
+			/*if(vised.contains(node)&&vised2.contains(node))	
+			vised3.add(node);
+			 if(vised.contains(node))
+				vised2.add(node);*/
+				
+					vised.add(node);
+				//Visit.add(node.getId());
+			state.moveTo(node.getId());
+			}
+		}
 		
-		dfs(state); //run Depth first search
+    //throw new NotImplementedError();
 	}
-	
-	
 	/**
 	 * Recursion: depth First Search
 	 * @param state the findState
@@ -77,8 +131,12 @@ public class DiverMin implements SewerDiver {
 
 		ArrayList<Long> test = new ArrayList<Long>();
 		
-		for(NodeStatus n: state.neighbors()) {	// add all neighboring places to candidate and NCand		
-			if(!Visit.contains(n.getId())) {    // Except for places already visited
+		for(NodeStatus n: state.neighbors()) {// add all neighboring places to candidate and NCand
+			if(n.getDistanceToTarget()== 0) {
+				state.moveTo(n.getId());
+				return nextMove;
+			}		
+			if(!Visit.contains(n.getId())) {    // execpt for places already visited
 				Candidate.add(n.getId());
 				NCand.add(n);
 				test.add(n.getId());
@@ -150,16 +208,16 @@ public class DiverMin implements SewerDiver {
 	 * the exit. */
 	@Override
 	public void flee(FleeState state) {
-		
 		int i=0;
-		
-		 for(Node n:GraphAlgorithms.shortestPath(state.currentNode(), state.getExit())) {
-			 if(i>0) {//omit move from start to start
-				 state.moveTo(n); //move according to the shortest path route
-			 }
-			 i++;
-		 }
-		
+				
+				 for(Node n:GraphAlgorithms.shortestPath(state.currentNode(), state.getExit())) {
+					 if(i>0) {//omit move from start to start
+						 state.moveTo(n); //move according to the shortest path route
+					 }
+					 i++;
+				 }
+				
+			
 	}
 
 }
