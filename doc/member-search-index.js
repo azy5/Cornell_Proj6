@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"game","c":"FindState","l":"currentLocation()"},{"p":"game","c":"FindState","l":"distanceToRing()"},{"p":"game","c":"FindState","l":"moveTo(long)"},{"p":"game","c":"FindState","l":"neighbors()"}]
