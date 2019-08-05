@@ -69,7 +69,7 @@ public class DiverMin implements SewerDiver {
 				int n= neighbor.getDistanceToTarget();
 				if(neighbor.getDistanceToTarget()== 0) {
 					state.moveTo(neighbor.getId());
-					break;
+					return;
 				}
 				if(b>n && !(vised.contains(neighbor))) {
 					b=n;
@@ -131,7 +131,11 @@ public class DiverMin implements SewerDiver {
 
 		ArrayList<Long> test = new ArrayList<Long>();
 		
-		for(NodeStatus n: state.neighbors()) {	// add all neighboring places to candidate and NCand		
+		for(NodeStatus n: state.neighbors()) {// add all neighboring places to candidate and NCand
+			if(n.getDistanceToTarget()== 0) {
+				state.moveTo(n.getId());
+				return nextMove;
+			}		
 			if(!Visit.contains(n.getId())) {    // execpt for places already visited
 				Candidate.add(n.getId());
 				NCand.add(n);
@@ -204,7 +208,26 @@ public class DiverMin implements SewerDiver {
 	 * the exit. */
 	@Override
 	public void flee(FleeState state) {
-    throw new NotImplementedError();
+		for(Node nodes: state.allNodes()) {
+		int i=0;
+		if(state.stepsLeft()>100) {
+		 for(Node n:GraphAlgorithms.shortestPath(state.currentNode(), nodes)) {
+			 if(i>0) {//omit move from start to start
+				 state.moveTo(n); //move according to the shortest path route
+			 }
+			 i++;
+		 }
+		}
+		if(state.stepsLeft()<100) {
+			 for(Node n:GraphAlgorithms.shortestPath(state.currentNode(), state.getExit())) {
+				 i=0;
+				 if(i>0) {//omit move from start to start
+					 state.moveTo(n); //move according to the shortest path route
+				 }
+				 i++;
+			 }	
+		}
+	}
 	}
 
 }
