@@ -41,83 +41,60 @@ public class DiverMin implements SewerDiver {
 	 * A suggested first implementation that will always find the ring, but <br>
 	 * likely won't receive a large bonus multiplier, is a depth-first walk. <br>
 	 * Some modification is necessary to make the search better, in general. */
+	
 	ArrayList<Long> Visit = new ArrayList<Long>();//places visited
 	ArrayList<Long> Candidate = new ArrayList<Long>(); //places in wait
 	HashMap<Long, Long> Pred = new HashMap<Long, Long>(); // the predecessor of the place
 	ArrayList<NodeStatus> NCand = new ArrayList<NodeStatus>(); // places in wait in Node Status
+	
 	@Override
 	public void find(FindState state) {
-		/*if(state.distanceToRing()==0) {
-			return;
-		}
-		for(NodeStatus neighbor : state.neighbors()) {
-			if(neighbor.getDistanceToTarget()==0) {
-			   state.moveTo(neighbor.getId());
-			   return;
-			}
-		}
-		find(state);
-		*/
-		ArrayList<NodeStatus> vised= new ArrayList<NodeStatus>();
-		/*ArrayList<NodeStatus> vised2= new ArrayList<NodeStatus>();
-		ArrayList<NodeStatus> vised3= new ArrayList<NodeStatus>();*/
+
+		ArrayList<NodeStatus> vised= new ArrayList<NodeStatus>(); //create an array list for visited
 		
-		while(state.distanceToRing()!=0) {
+		//if place is not where ring is
+		while(state.distanceToRing()!=0) { 
+			
 			int b=10000;
 			NodeStatus node=null;
-			for(NodeStatus neighbor : state.neighbors()) {
+			
+			//loop through all possible neighbors
+			for(NodeStatus neighbor : state.neighbors()) { 
+				
 				int n= neighbor.getDistanceToTarget();
+				
+				//if neighbor is where ring is
 				if(neighbor.getDistanceToTarget()== 0) {
+					
 					state.moveTo(neighbor.getId());
 					return;
 				}
-				if(b>n && !(vised.contains(neighbor))) {
-					b=n;
-					node= neighbor;
+				
+				//if neighbor is visited
+				if(b>n && !(vised.contains(neighbor))) { 
 					
+					b=n;
+					node= neighbor;					
 				}
 			}
-			if(node==null) {
-				Visit.add(state.currentLocation());
+			
+			//if no neighbor available
+			if(node==null) { 
+				
+				Visit.add(state.currentLocation()); 
 				dfs(state);
 			}
-			/*if(node== null) {
-				/*i++;
-				state.moveTo(vised.get(vised.size()-i-1).getId());
-				continue;
-				b=0;
-				for(NodeStatus neighbor : state.neighbors()) {
-					int n= neighbor.getDistanceToTarget();
-					if(b<n && !(vised2.contains(node))) {
-						b=n;
-						node= neighbor;
-					}
-				}
-			}*/
-			/*if(node== null) {
-				b=100000;
-				for(NodeStatus neighbor : state.neighbors()) {
-					int n= neighbor.getDistanceToTarget();
-					if(b<n && !(vised3.contains(node))) {
-						b=n;
-						node= neighbor;
-					}
-				}
-			}*/
+
 			if(state.distanceToRing()!=0 && node!=null) {
-			/*if(vised.contains(node)&&vised2.contains(node))	
-			vised3.add(node);
-			 if(vised.contains(node))
-				vised2.add(node);*/
-				
+
 					vised.add(node);
-				//Visit.add(node.getId());
-			state.moveTo(node.getId());
+					state.moveTo(node.getId());
 			}
 		}
-		
-    //throw new NotImplementedError();
 	}
+	
+	
+	
 	/**
 	 * Recursion: depth First Search
 	 * @param state the findState
@@ -131,12 +108,18 @@ public class DiverMin implements SewerDiver {
 
 		ArrayList<Long> test = new ArrayList<Long>();
 		
-		for(NodeStatus n: state.neighbors()) {// add all neighboring places to candidate and NCand
+		// add all neighboring places to candidate and NCand
+		for(NodeStatus n: state.neighbors()) {
+			
 			if(n.getDistanceToTarget()== 0) {
+				
 				state.moveTo(n.getId());
 				return nextMove;
-			}		
-			if(!Visit.contains(n.getId())) {    // execpt for places already visited
+			}
+			
+			// Except for places already visited
+			if(!Visit.contains(n.getId())) { 
+				
 				Candidate.add(n.getId());
 				NCand.add(n);
 				test.add(n.getId());
@@ -145,11 +128,13 @@ public class DiverMin implements SewerDiver {
 		
 		System.out.println("after neighboring: "+Candidate.toString());
 		System.out.println("New add:"+test.toString());
-			
-		if(test.isEmpty()) { // if this the place is a dead end or alll its neighbors is visited
+		
+		// if this the place is a dead end or all its neighbors is visited
+		if(test.isEmpty()) { 
 			System.out.println("dead end");
 			
 			if(Candidate.get(Candidate.size()-1)==state.currentLocation()) {
+				
 				Candidate.remove(Candidate.size()-1);
 				NCand.remove(NCand.size()-1);
 			}
@@ -162,9 +147,9 @@ public class DiverMin implements SewerDiver {
 			
 			if(!Candidate.isEmpty()) {
 				dfs(state);
-			}
-			
+			}			
 		}else { //move to the last candidate
+			
 			nextMove = Candidate.get(Candidate.size()-1);
 			Pred.put(nextMove, Visit.get(Visit.size()-1));
 			state.moveTo(nextMove);
@@ -173,7 +158,9 @@ public class DiverMin implements SewerDiver {
 			
 			
 			System.out.println("ID: "+ nextMove+" distance:"+NCand.get(NCand.size()-1).getDistanceToTarget());
+			
 			if(NCand.get(NCand.size()-1).getDistanceToTarget()!=0) {
+				
 				NCand.remove(NCand.size()-1);
 				dfs(state);
 			}	
@@ -208,16 +195,15 @@ public class DiverMin implements SewerDiver {
 	 * the exit. */
 	@Override
 	public void flee(FleeState state) {
+		
 		int i=0;
 				
-				 for(Node n:GraphAlgorithms.shortestPath(state.currentNode(), state.getExit())) {
-					 if(i>0) {//omit move from start to start
-						 state.moveTo(n); //move according to the shortest path route
-					 }
-					 i++;
-				 }
-				
-			
+		 for(Node n:GraphAlgorithms.shortestPath(state.currentNode(), state.getExit())) {
+			 if(i>0) {//omit move from start to start
+				 state.moveTo(n); //move according to the shortest path route
+			 }
+			 i++;
+		 }		
 	}
 
 }
