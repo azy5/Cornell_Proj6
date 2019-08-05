@@ -107,6 +107,8 @@ public class GraphAlgorithms  {
 				}
 			}
 		}
+		
+		System.out.println(distance.toString());
 		return new ArrayList<>();
 	}
 	

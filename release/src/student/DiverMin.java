@@ -78,7 +78,7 @@ public class DiverMin implements SewerDiver {
 		ArrayList<Long> test = new ArrayList<Long>();
 		
 		for(NodeStatus n: state.neighbors()) {	// add all neighboring places to candidate and NCand		
-			if(!Visit.contains(n.getId())) {    // execpt for places already visited
+			if(!Visit.contains(n.getId())) {    // Except for places already visited
 				Candidate.add(n.getId());
 				NCand.add(n);
 				test.add(n.getId());
